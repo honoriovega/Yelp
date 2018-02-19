@@ -105,6 +105,9 @@
                             <constraint firstItem="Di7-P7-Dmn" firstAttribute="leading" secondItem="XhR-oz-92f" secondAttribute="leading" id="t3o-9V-pEY"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="Di7-P7-Dmn" id="Hs9-zb-7rP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fgb-4b-F1b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
