@@ -15,6 +15,8 @@ UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,UIScrollViewDele
     
     var searchBar : UISearchBar!
     
+    var offset = 0
+    
     
     var isMoreDataLoading = false
     var loadingMoreView:InfiniteScrollActivityView?
@@ -119,8 +121,7 @@ UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,UIScrollViewDele
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // Handle scroll behavior here
         if (!isMoreDataLoading) {
-            print("cool")
-            
+        
             // Calculate the position of one screen length before the bottom of the results
             let scrollViewContentHeight = tableView.contentSize.height
             let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
@@ -129,6 +130,9 @@ UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,UIScrollViewDele
             if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
                 isMoreDataLoading = true
                 
+                
+                offset += 20
+                print(offset)
                 
                 // Update position of loadingMoreView, and start loading indicator
                 let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
