@@ -9,11 +9,20 @@
 import UIKit
 
 class BusinessesViewController: UIViewController,
-UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
+UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,UIScrollViewDelegate{
     
     var businesses: [Business]!
     
     var searchBar : UISearchBar!
+    
+    var offset = 0
+    
+    var searchTerm = ""
+    
+    
+    var isMoreDataLoading = false
+    var loadingMoreView:InfiniteScrollActivityView?
+
     
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
@@ -39,12 +48,12 @@ UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
             
             self.businesses = businesses
             self.tableView.reloadData()
-            if let businesses = businesses {
-                for business in businesses {
-                    print(business.name!)
-                    print(business.address!)
-                }
-            }
+//            if let businesses = businesses {
+//                for business in businesses {
+//                    print(business.name!)
+//                    print(business.address!)
+//                }
+//            }
             
             }
         )
@@ -60,6 +69,16 @@ UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
          }
          */
         
+        
+        // Set up Infinite Scroll loading indicator
+        let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+        loadingMoreView = InfiniteScrollActivityView(frame: frame)
+        loadingMoreView!.isHidden = true
+        tableView.addSubview(loadingMoreView!)
+        
+        var insets = tableView.contentInset
+        insets.bottom += InfiniteScrollActivityView.defaultHeight
+        tableView.contentInset = insets
     }
     
     override func didReceiveMemoryWarning() {
@@ -86,19 +105,86 @@ UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
     // This method updates filteredData based on the text in the Search Box
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
+        offset = 0
+        
+        searchTerm = searchText
+        
         Business.searchWithTerm(term: searchText, completion: { (businesses: [Business]?, error: Error?) -> Void in
             
             self.businesses = businesses
             self.tableView.reloadData()
-            if let businesses = businesses {
-                for business in businesses {
-                    print(business.name!)
-                    print(business.address!)
-                }
-            }
+//            if let businesses = businesses {
+//                for business in businesses {
+//                    print(business.name!)
+//                    print(business.address!)
+//                }
+//            }
             
         }
         )
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // Handle scroll behavior here
+        if (!isMoreDataLoading) {
+        
+            // Calculate the position of one screen length before the bottom of the results
+            let scrollViewContentHeight = tableView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - tableView.bounds.size.height
+            
+            // When the user has scrolled past the threshold, start requesting
+            if(scrollView.contentOffset.y > scrollOffsetThreshold && tableView.isDragging) {
+                isMoreDataLoading = true
+                
+                
+                offset += 20
+                print(offset)
+                
+                // Update position of loadingMoreView, and start loading indicator
+                let frame = CGRect(x: 0, y: tableView.contentSize.height, width: tableView.bounds.size.width, height: InfiniteScrollActivityView.defaultHeight)
+                loadingMoreView?.frame = frame
+                loadingMoreView!.startAnimating()
+                
+    
+                
+                loadMoreData()
+                
+                // ... Code to load more results ...
+            }
+        }
+    }
+    
+    func loadMoreData() {
+        
+        Business.searchWithTerm(term: "\(searchTerm)^\(offset)", completion: { (businesses: [Business]?, error: Error?) -> Void in
+            self.isMoreDataLoading = false
+            // Stop the loading indicator
+            self.loadingMoreView!.stopAnimating()
+            
+            if(businesses?.count != 0) {
+                self.businesses = businesses
+
+            }
+           
+            self.tableView.reloadData()
+
+            
+//            if let businesses = businesses {
+//                for business in businesses {
+//                    print(business.name!)
+//                    print(business.address!)
+//                }
+//            }
+            
+
+            
+            
+        }
+        )
+        
+        
+       
+    }
+
     
 }
