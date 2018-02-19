@@ -161,8 +161,14 @@ UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,UIScrollViewDele
             // Stop the loading indicator
             self.loadingMoreView!.stopAnimating()
             
-            self.businesses = businesses
+            if(businesses?.count != 0) {
+                self.businesses = businesses
+
+            }
+           
             self.tableView.reloadData()
+
+            
 //            if let businesses = businesses {
 //                for business in businesses {
 //                    print(business.name!)
