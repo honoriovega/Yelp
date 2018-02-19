@@ -9,13 +9,26 @@
 import UIKit
 
 class BusinessesViewController: UIViewController,
-UITableViewDataSource, UITableViewDelegate{
+UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
     
     var businesses: [Business]!
+    
+    var searchBar : UISearchBar!
     
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        // create the search bar programatically since you won't be
+        // able to drag one onto the navigation bar
+        searchBar = UISearchBar()
+        searchBar.sizeToFit()
+        searchBar.delegate = self
+
+        // the UIViewController comes with a navigationItem property
+        // this will automatically be initialized for you if when the
+        // view controller is added to a navigation controller's stack
+        // you just need to set the titleView to be the search bar
+        navigationItem.titleView = searchBar
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -68,6 +81,17 @@ UITableViewDataSource, UITableViewDelegate{
         cell.business = businesses[indexPath.row]
         
         return cell
+    }
+    
+    // This method updates filteredData based on the text in the Search Box
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//
+//        filteredData = searchText.isEmpty ? data : data.filter { (item: String) -> Bool in
+//            // If dataItem matches the searchText, return true to include it
+//            return item.range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+//        }
+        
+        print(searchText)
     }
     
 }
