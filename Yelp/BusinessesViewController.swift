@@ -17,6 +17,8 @@ UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,UIScrollViewDele
     
     var offset = 0
     
+    var searchTerm = ""
+    
     
     var isMoreDataLoading = false
     var loadingMoreView:InfiniteScrollActivityView?
@@ -103,6 +105,10 @@ UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,UIScrollViewDele
     // This method updates filteredData based on the text in the Search Box
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
+        offset = 0
+        
+        searchTerm = searchText
+        
         Business.searchWithTerm(term: searchText, completion: { (businesses: [Business]?, error: Error?) -> Void in
             
             self.businesses = businesses
@@ -150,8 +156,7 @@ UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate,UIScrollViewDele
     
     func loadMoreData() {
         
-        print("called me")
-        Business.searchWithTerm(term: "mexican", completion: { (businesses: [Business]?, error: Error?) -> Void in
+        Business.searchWithTerm(term: "\(searchTerm)^\(offset)", completion: { (businesses: [Business]?, error: Error?) -> Void in
             self.isMoreDataLoading = false
             // Stop the loading indicator
             self.loadingMoreView!.stopAnimating()
