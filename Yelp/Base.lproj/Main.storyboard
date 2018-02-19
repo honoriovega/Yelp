@@ -25,7 +25,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="169" id="fbh-9M-GBR">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BusinessCell" rowHeight="169" id="fbh-9M-GBR" customClass="BusinessCell" customModule="Yelp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="169"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fbh-9M-GBR" id="R8i-W5-OZV">
@@ -84,6 +84,15 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="addressLabel" destination="9IT-hW-Mgf" id="AoC-9R-nRJ"/>
+                                            <outlet property="categoriesLabel" destination="Bqi-fv-8wk" id="r5L-XB-eDg"/>
+                                            <outlet property="distanceLabel" destination="L8j-7S-WMj" id="tna-vF-Y1w"/>
+                                            <outlet property="nameLabel" destination="umF-vx-ECO" id="E9n-lX-Pyo"/>
+                                            <outlet property="ratingImageView" destination="h31-a7-fJl" id="DBX-4F-hMq"/>
+                                            <outlet property="reviewsCountLabel" destination="103-mw-P64" id="UPN-fb-3xo"/>
+                                            <outlet property="thumbImageView" destination="ehX-1a-s5t" id="dXW-h4-6l6"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
